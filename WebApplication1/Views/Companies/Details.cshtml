@@ -1,0 +1,64 @@
+﻿@model WebApplication1.Models.Company
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Company</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Industry)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Industry)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NIP)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NIP)
+        </dd>
+    </dl>
+</div>
+<div>
+    <h5>Subscribtions</h5>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Clients)
+            {
+                <tr>
+                    <td>
+                        @item.Client.Name
+                    </td>
+                    <td>
+                        @item.Client.Surname
+                    </td>
+                    <td>
+                        <a asp-controller="Clients" asp-action="Details" asp-route-id="@item.Client.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

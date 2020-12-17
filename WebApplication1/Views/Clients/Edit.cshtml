@@ -1,0 +1,101 @@
+﻿@model Client
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Edit</h1>
+
+<h4>Client</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PESEL" class="control-label"></label>
+                <input asp-for="PESEL" class="form-control" />
+                <span asp-validation-for="PESEL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <h5>Subscribtions</h5>
+    <div class="form-group">
+        <select name="list" id="list" class="form-control" onchange="CreateLink()" asp-items=@ViewBag.SelectList>
+            <option>Please select</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <a class="btn btn-primary" name="addLink" id="addLink" href="#">Add Subscribtion</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Industry</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Subscriptions)
+            {
+                <tr>
+                    <td>
+                        @item.Company.Name
+                    </td>
+                    <td>
+                        @item.Company.Industry
+                    </td>
+                    <td>
+                        <a href="@Url.Action("DeleteSubscribtion", "Clients", new { clientId = Model.Id, companyId = item.CompanyId})">Delete</a>
+                        <a asp-controller="Companies" asp-action="Details" asp-route-id="@item.CompanyId">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script type="text/javascript">
+
+    function CreateLink() {
+        var list = document.getElementById("list");
+        var y = list.options[list.selectedIndex].value;
+        if (y == "Please select") {
+            document.getElementById("addLink").href = "#";
+            return false;
+        }
+        var x = @Model.Id;
+        var url = window.location.href
+        url = url.substr(0, url.indexOf("/Edit/"));
+        document.getElementById("addLink").href = url + "/AddSubscribtion?clientId=" + x + "&companyId=" + y;
+        return false;
+    }
+
+</script>
+}
